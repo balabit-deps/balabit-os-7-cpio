@@ -1,0 +1,24 @@
+Description: Return MT_EXIT_FAILURE instead of MT_EXIT_INVOP for fatal exits from mt.
+
+--- pkg-cpio.orig/src/Makefile.am
++++ pkg-cpio/src/Makefile.am
+@@ -42,6 +42,8 @@ cpio_SOURCES = \
+  makepath.c\
+  userspec.c
+ 
++mt_SOURCES = mt.c
++
+ noinst_HEADERS =\
+  cpio.h\
+  cpiohdr.h\
+--- pkg-cpio.orig/src/mt.c
++++ pkg-cpio/src/mt.c
+@@ -55,6 +55,8 @@
+ 
+    David MacKenzie <djm@gnu.ai.mit.edu> */
+ 
++#include "configmake.h"
++
+ #include <system.h>
+ 
+ #include <stdio.h>

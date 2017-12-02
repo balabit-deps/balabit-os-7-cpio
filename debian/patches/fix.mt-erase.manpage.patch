@@ -1,0 +1,18 @@
+Description: Identify how to perform "fast erase" operations on devices that
+ support it.
+Bug: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=770198
+Author: Kees Cook <kees@debian.org>
+
+--- pkg-cpio.orig/doc/mt.1
++++ pkg-cpio/doc/mt.1
+@@ -122,7 +122,9 @@ Rewind the tape, then wind it to the end
+ then rewind it again.
+ .TP 
+ .B erase
+-Erase the tape.
++Perform long erase of tape. If
++.I count
++is 0, perform short erase of tape (some devices do not support this).
+ .PP
+ .B mt
+ exits with a status of 0 if the operation succeeded, 1 if the

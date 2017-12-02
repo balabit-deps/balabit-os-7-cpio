@@ -1,0 +1,58 @@
+Description: fix other bugs
+
+--- pkg-cpio.orig/lib/sysdep.h
++++ pkg-cpio/lib/sysdep.h
+@@ -20,6 +20,8 @@
+    You should have received a copy of the GNU General Public License
+    along with GNU cpiio.  If not, see <http://www.gnu.org/licenses/>. */
+ 
++#ifndef LIB_SYSDEP_H
++#define LIB_SYSDEP_H 1
+ 
+ #ifdef HAVE_PROCESS_H
+ # include <process.h>
+@@ -141,4 +143,4 @@ int link (const char *oldname,const char
+ int chown (const char *filename,int owner,int group);
+ #endif
+ 
+-
++#endif
+--- pkg-cpio.orig/lib/rtapelib.c
++++ pkg-cpio/lib/rtapelib.c
+@@ -425,7 +425,9 @@ rmt_open__ (const char *file_name, int o
+   }
+ 
+   /* FIXME: Should somewhat validate the decoding, here.  */
++#ifndef __WIN32__
+   if (gethostbyname (remote_host) == NULL)
++#endif
+     error (EXIT_ON_EXEC_ERROR, 0, _("Cannot connect to %s: resolve failed"),
+ 	   remote_host);
+ 
+--- pkg-cpio.orig/lib/sysdep.c
++++ pkg-cpio/lib/sysdep.c
+@@ -187,4 +187,12 @@ chown ( const char *filename __attribute
+   return -1;
+ }
+ #endif
+-
++#ifdef __WIN32__
++# warning "Providing stub placeholder for readlink function"
++int
++readlink ( const char *path __attribute__ ((unused)) ,  char *buf __attribute__ ((unused)) ,  size_t bufsiz __attribute__ ((unused)) )
++{
++  errno = ENOSYS;
++  return -1;
++}
++#endif
+--- pkg-cpio.orig/src/main.c
++++ pkg-cpio/src/main.c
+@@ -785,6 +785,8 @@ main (int argc, char *argv[])
+   
+   initialize_buffers ();
+ 
++  SET_BINARY_MODE (1);
++
+   (*copy_function) ();
+ 
+   if (archive_des >= 0 && rmtclose (archive_des) == -1)
