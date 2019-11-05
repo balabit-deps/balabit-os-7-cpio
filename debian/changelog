@@ -1,3 +1,13 @@
+cpio (2.12+dfsg-6ubuntu0.18.04.1) bionic-security; urgency=medium
+
+  * SECURITY UPDATE: Improper input validation
+    - debian/patches/CVE-2019-14866.patch: improve diagnostics,
+      remove to_oct_or_error, adding new macro in
+      src/copyout.c, src/extern.h, src/tar.c.
+    - CVE-2019-14866
+
+ -- Leonidas S. Barbosa <leo.barbosa@canonical.com>  Tue, 05 Nov 2019 15:09:06 -0300
+
 cpio (2.12+dfsg-6) unstable; urgency=medium
 
   * Upload to unstable.
